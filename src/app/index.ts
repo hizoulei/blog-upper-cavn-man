@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import { koaBody } from 'koa-body';
 import router from '../router/index';
+import errHandler from './errHandler';
 const app = new Koa();
 
 app.use(
@@ -19,5 +20,6 @@ app.use(async (ctx) => {
     requestedUrl: ctx.request.url,
   };
 });
+app.on('error', errHandler);
 
 export default app;

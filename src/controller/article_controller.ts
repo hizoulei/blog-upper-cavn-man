@@ -4,7 +4,7 @@
 import { createArticleService, getArticleServiceList } from '../service/article_service';
 
 import { Context } from 'koa';
-import { articleParams, articleType } from '../types/article_type';
+import { articleParams } from '../types/article_type';
 /**
  *  获取文章列表
  * @param ctx 上下文
@@ -31,13 +31,11 @@ export const getArticleList = async (ctx: Context) => {
  * @param ctx 上下文
  */
 export const createArticle = async (ctx: Context) => {
-  const data: articleType = ctx.request.body as articleType;
-  console.log(data, 'body566666666666665555555555555555555555555');
+  let data = ctx.request.body;
   try {
-    const article = await createArticleService(data);
+    await createArticleService(data);
     ctx.body = {
       code: 200,
-      data: article,
       message: 'success',
     };
   } catch (e: any) {

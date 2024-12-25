@@ -34,7 +34,7 @@ const ArticleModel = seq.define(
       comment: '作者id',
     },
     status: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
       comment: '文章状态 0:草稿 1:发布 2:未发布',
@@ -46,13 +46,6 @@ const ArticleModel = seq.define(
   }
 );
 // 同步模型到数据库
-// seq
-//   .sync()
-//   .then(() => {
-//     console.log('表已创建');
-//   })
-//   .catch((err) => {
-//     console.error('创建表时出错:', err);
-//   });
+// ArticleModel.sync({ force: true });
 
 export default ArticleModel;
