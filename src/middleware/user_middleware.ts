@@ -8,21 +8,9 @@ import { Context, Next } from 'koa';
 import errHandler from '../constant/err.constant';
 import { getUserInfo } from '../service/user_service';
 import { getNumberUid } from '../utils';
-/**
- * 用户登录参数验证
- */
-export const userVerify = async (ctx: Context, next: Next) => {
-  const schema = Joi.object({
-    账户: Joi.string().allow('').required(),
-    密码: Joi.number().min(18).max(35),
-    skill: Joi.array().items(Joi.string()).length(3),
-  });
 
-  const { userName, password } = ctx.request.body;
-  await next();
-};
 /**
- * 用户注册参数验证
+ * 用户注册/登录参数验证
  */
 export const userRegisterVerify = async (ctx: Context, next: Next) => {
   const schema = Joi.object({
@@ -69,9 +57,24 @@ export const passwordEncrypt = async (ctx: Context, next: Next) => {
 };
 
 /**
- * 用户信息默认值
+ * 用户昵称信息默认值
  */
 export const userInfoDefault = async (ctx: Context, next: Next) => {
   ctx.request.body.nickname = '用户' + getNumberUid();
+  await next();
+};
+/**
+ * 用户登录账户密码验证
+ */
+export const userLoginVerify = async (ctx: Context, next: Next) => {
+  const { account, password } = ctx.request.body;
+  let res = await getUserInfo({ account });
+  if (res !== null) {
+    ctx.app.emit('error', errHandler.userExist, ctx);
+  }
+  // 验证密码
+  if (!bcrypt.compareSync(password, res.password)) {
+    ctx.app.emit('error', errHandler.userLoginError);
+  }
   await next();
 };

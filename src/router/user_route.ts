@@ -1,19 +1,19 @@
 import Router from '@koa/router';
 
-import { createUser } from '../controller/user_controller';
+import { createUser, userLogin } from '../controller/user_controller';
 import {
   passwordEncrypt,
   userExist,
   userInfoDefault,
+  userLoginVerify,
   userRegisterVerify,
-  userVerify,
 } from '../middleware/user_middleware';
 
 const router = new Router({
   prefix: '/user',
 });
 
-router.get('/login', userVerify);
+router.post('/login', userRegisterVerify, userLoginVerify, userLogin);
 
 router.post(
   '/register',

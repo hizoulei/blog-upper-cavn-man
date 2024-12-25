@@ -11,5 +11,13 @@ const errHandler = {
     code: '10003',
     message: '创建用户失败',
   },
+  userLoginError: {
+    code: '10004',
+    message: '账户和密码不正确',
+  },
+  userLoginErrors: {
+    code: '10005',
+    message: '登录失败',
+  },
 };
 export default errHandler;
